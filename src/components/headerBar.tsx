@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+
+
 import { fade, makeStyles, useTheme, Theme, createStyles, withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -24,6 +27,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
+import {setTab} from '../redux/actions';
 const drawerWidth = 240;
 
 const styles = (theme: any) => ({
@@ -146,7 +150,9 @@ function a11yProps(index: any){
 }
 
 interface HBProps {
-	classes: any
+	classes: any;
+	tab?: any;
+	setTab: Function;
 }
 
 interface HBState {
@@ -164,9 +170,14 @@ class HeaderBar extends Component<HBProps, HBState>{
 		this.state = {
 			anchorEl: null,
 			open: false,
-			value: null,
+			value: 2,
 			mobileMoreAnchorEl: null
 		}
+	}
+
+	componentDidMount(){
+		console.log('HeaderBar::componentDidMount()')
+		console.log(this.props)
 	}
 
 	// const [anchorEl, setAnchorEl] = React.useState(null);
@@ -202,11 +213,14 @@ class HeaderBar extends Component<HBProps, HBState>{
 		})
 	}
 
-	handleChange = () => {
-
+	handleChange = (event:any) => {
+		console.log('headerBar::handleChange()');
+		let val = event.currentTarget.id.split("").slice(-1)[0];
+		console.log(val)
+		if(this.props.setTab) this.props.setTab(parseInt(val));
 	}
 	render(){
-		const {classes} = this.props;
+		const {classes, tab} = this.props;
 		const {open, value} = this.state;
 
 		return (
@@ -214,41 +228,33 @@ class HeaderBar extends Component<HBProps, HBState>{
 				<AppBar 
 					position='fixed'
 					className={`classes.appBar, ${open && classes.appBarShift}`}>
-					<Toolbar>
-						<IconButton
-							edge="start"
-							className={classes.menuButton}
-							color="inherit"
-							aria-label="open drawer"
-							onClick={this.handleDrawerOpen}>
-							<MenuIcon/>
-						</IconButton>
-						<Typography className={classes.title} variant="h6" noWrap>
-							On Code
-						</Typography>
-						{/*
-						<div className={classes.search}>
-							<div className={classes.searchIcon}>
-								<SearchIcon/>
-							</div>
-							<InputBase
-								placeholder="Search..."
-								classes={{
-									root: classes.inputRoot,
-									input:classes.inputInput
-								}}
-								inputProps={{'aria-label': 'search'}}/>
-						</div>
-						*/}
-					</Toolbar>
+					{/*
+						<Toolbar>
+							<IconButton
+								edge="start"
+								className={classes.menuButton}
+								color="inherit"
+								aria-label="open drawer"
+								onClick={this.handleDrawerOpen}>
+								<MenuIcon/>
+							</IconButton>
+
+						</Toolbar>
+					*/}
+					<Typography className={classes.title} variant="h6" noWrap>
+						On Code
+					</Typography>
 					<Tabs
 						variant="fullWidth"
-						value={value}
+						value={tab}
 						onChange={this.handleChange}
 						aria-label="nav tabs">
 						<LinkTab label="Page One" href="/drafts" {...a11yProps(0)}/>
+						<LinkTab label="Page Two" href="/drafts" {...a11yProps(1)}/>
+						<LinkTab label="Page Three" href="/drafts" {...a11yProps(2)}/>
 					</Tabs>
 				</AppBar>
+				{/*
 				<Drawer
 					className={classes.drawer}
 					variant="persistent"
@@ -272,10 +278,23 @@ class HeaderBar extends Component<HBProps, HBState>{
 						))}
 					</List>
 				</Drawer>
+				*/}
 			</div>	
 		)
 	}
 }
 
-export default withStyles(styles)(HeaderBar);
+const mapStateToProps = (state:any) => ({
+	tab: state.tab
+})
+
+const mapDispatchToProps = (dispatch:any) => ({
+	setTab(tabNo:any){
+		console.log('mapDispathToProps::setTab');
+		console.log(tabNo)
+		dispatch(setTab(tabNo));
+	}
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(HeaderBar));
 
