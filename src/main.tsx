@@ -6,6 +6,8 @@ import {Blogs} from './pages/blogs';
 import {withStyles} from '@material-ui/core/styles';
 import HeaderBar from './components/headerBar'; 
 
+import Paper from '@material-ui/core/Paper';
+
 interface mainProps{
 	classes:any
 }
@@ -26,7 +28,10 @@ class Main extends Component<mainProps, mainState>{
 		return(
 			<div className={classes.root}>
   				<HeaderBar/>
-				<Blogs/>
+				<Paper>
+					<Blogs/>
+					Test
+				</Paper>
 			</div>
 		)
 	}
@@ -34,7 +39,6 @@ class Main extends Component<mainProps, mainState>{
 
 const styles = {
 	root: {
-		background: 'red'
 	}
 }
 

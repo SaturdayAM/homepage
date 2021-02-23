@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 
-import { fade, makeStyles, useTheme, Theme, createStyles, withStyles } from '@material-ui/core/styles';
+import { fade, Theme, withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -26,6 +26,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Grid from '@material-ui/core/Grid';
+
+import Paper from '@material-ui/core/Paper';
 
 import {setTab} from '../redux/actions';
 const drawerWidth = 240;
@@ -241,19 +244,26 @@ class HeaderBar extends Component<HBProps, HBState>{
 
 						</Toolbar>
 					*/}
-					<Typography className={classes.title} variant="h6" noWrap>
-						On Code
-					</Typography>
-					<Tabs
-						variant="fullWidth"
-						value={tab}
-						onChange={this.handleChange}
-						aria-label="nav tabs">
-						<LinkTab label="Page One" href="/drafts" {...a11yProps(0)}/>
-						<LinkTab label="Page Two" href="/drafts" {...a11yProps(1)}/>
-						<LinkTab label="Page Three" href="/drafts" {...a11yProps(2)}/>
-					</Tabs>
+					<Grid container spacing={3}>
+						<Grid item xs={3}>
+							<Typography className={classes.title} variant="h6" noWrap>
+								On Code
+							</Typography>
+						</Grid>
+						<Grid item xs={9}>
+							<Tabs
+								variant="fullWidth"
+								value={tab}
+								onChange={this.handleChange}
+								aria-label="nav tabs">
+								<LinkTab label="Blog" href="/drafts" {...a11yProps(0)}/>
+								<LinkTab label="Projects" href="/drafts" {...a11yProps(1)}/>
+								<LinkTab label="About Me" href="/drafts" {...a11yProps(2)}/>
+							</Tabs>
+						</Grid>
+					</Grid>
 				</AppBar>
+				<Toolbar/>
 				{/*
 				<Drawer
 					className={classes.drawer}
