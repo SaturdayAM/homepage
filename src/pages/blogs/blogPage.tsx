@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ReactMarkdown from 'react-markdown';
 import marked from "marked";
-
+import CodeBlock from "./codeBlock";
 
 class BlogPage extends Component <any, any>{
 	constructor(props: any){
@@ -35,7 +35,9 @@ class BlogPage extends Component <any, any>{
 				style={{
 					textAlign: 'left'
 				}}>
-			<ReactMarkdown source={markdown}/>
+			<ReactMarkdown 
+				source={markdown}
+				renderers={{code: CodeBlock}}/>
 			</div>
 		)
 	}
